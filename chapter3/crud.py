@@ -1,5 +1,6 @@
 #uvicorn crud:app --reload
-from fastapi import FastAPI
+from fastapi import FastAPI, status, Body
+from fastapi.exceptions import HTTPException
 
 app = FastAPI()
 
@@ -7,25 +8,41 @@ messages_db = {0: "First post in Fast API"}
 
 @app.get('/messages')
 async def read_messages() -> dict:
-    pass
+    return messages_db
 
 @app.get("/messages/{message_id}")
 async def read_message(message_id: int) -> str:
-    pass
+    try:
+        return messages_db[message_id]
+    except:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Message not found")
 
 
-@app.post("/messages")
-async def create_message(message: str) -> str:
-    pass
+@app.post("/messages", status_code=status.HTTP_201_CREATED)
+async def create_message(message: str = Body(...)) -> str:
+    current_index = max(messages_db) + 1 if messages_db else 0
+    messages_db[current_index] = message
+    return "Message created!"
 
-@app.put("/messages/{message_id}")
-async def update_message(message_id: int, message: str) -> str:
-    pass
+@app.put("/messages/{message_id}", status_code=status.HTTP_200_OK)
+async def update_message(message_id: int, message: str = Body(...)) -> str:
+    if message_id not in messages_db:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Message not found")
+    else:
+        messages_db[message_id] = message
+        return "Message updated!"
+        
 
-@app.delete("/messages/{message_id}")
+
+@app.delete("/messages/{message_id}", status_code=status.HTTP_200_OK)
 async def delete_sessage(message_id: int) -> str:
-    pass
+    if message_id not in messages_db:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Message not found")
+    else:
+        messages_db.pop(message_id)
+        return f"Message ID={message_id} deleted!"
 
-@app.delete("/messages")
+@app.delete("/messages", status_code=status.HTTP_200_OK)
 async def delete_messages() -> str:
-    pass
+    messages_db.clear()
+    return "All messages deleted!"
