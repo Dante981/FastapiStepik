@@ -55,7 +55,7 @@ async def update_message(message_id: int, message_create: MessageCreate) -> Mess
 
 # DELETE /messages/{message_id}: Удаление одного сообщения
 @app.delete("/messages/{message_id}", status_code=status.HTTP_200_OK)
-async def delete_sessage(message_id: int) -> dict:
+async def delete_message(message_id: int) -> dict:
     for i, message in enumerate(messages_db):
         if message.id == message_id:
             messages_db.pop(i)
