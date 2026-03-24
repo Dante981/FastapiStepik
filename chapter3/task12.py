@@ -55,7 +55,7 @@ tags: Поле списка тегов, связанных с записью.
 
 
 from pydantic import BaseModel, Field
-from datetime import datetime, timezone
+from datetime import datetime
 from typing import List
 
 class Post(BaseModel):
@@ -64,7 +64,7 @@ class Post(BaseModel):
     title: str = Field(max_length=100, description="Заголовок записи, не более 100 символов")
     description: str | None = Field(default=None, max_length=250, description="Описание записи, не более 250 символов")
     content: str = Field(description="Контент записи")
-    created_at: datetime = Field(default_factory=datetime.now(timezone.utc), description="Запись создана")
+    created_at: datetime = Field(default_factory=datetime.now, description="Запись создана")
     updated_at: datetime | None = Field(default=None, description="Запись обновлена")
     is_published: bool = Field(default=False, description="Запись опубликована")
     tags: List[str] = Field(default_factory=list, description="Теги записи")

@@ -22,6 +22,8 @@ DELETE /comments/{comment_id} — удаляет комментарий по com
 
 '''
 
+
+
 from fastapi import FastAPI, Body, status, HTTPException
 
 app = FastAPI()

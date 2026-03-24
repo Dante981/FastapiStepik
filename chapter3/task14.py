@@ -40,7 +40,7 @@ tasks = [
 
 
 @app.get("/tasks", response_model=list[Task], status_code=status.HTTP_200_OK)
-def read_tasks() -> list[Task]:
+async def read_tasks() -> list[Task]:
     return tasks
 
 

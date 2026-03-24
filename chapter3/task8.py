@@ -34,5 +34,5 @@ from pydantic import BaseModel, Field, EmailStr
 
 class Task(BaseModel):
     title: str = Field(min_length=1, max_length=100, description="Название задачи")
-    description: str = Field(default=None, max_length=500, description="Описание задачи")
+    description: str | None = Field(default=None, max_length=500, description="Описание задачи")
     is_completed: bool = Field(default=False, description="Статус завершения задачи")

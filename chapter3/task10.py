@@ -35,8 +35,6 @@ postal_code: Поле почтового индекса.
 
 
 from pydantic import BaseModel, Field
-from datetime import datetime
-from decimal import Decimal
 
 
 class Address(BaseModel):
